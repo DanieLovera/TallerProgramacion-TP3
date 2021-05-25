@@ -1,5 +1,6 @@
 #include "common_AddressInfo.h"
 #include "common_Socket.h"
+#include "server_Tateti.h"
 #include <iostream>
 
 #include "server_Board.h"
@@ -8,6 +9,12 @@
 
 int main(int argc, const char* argv[]) {
 	try {
+		/*Socket listener(SERVER_FLAGS);
+		listener.bindAndListen("localhost", "7777");
+		Socket peer = listener.accept();
+		char msg[5];
+		peer.receive(msg, 5);
+		printf("%s\n", msg);*/
 
 		return 0;
 	}
@@ -22,10 +29,3 @@ int main(int argc, const char* argv[]) {
 		return 1;
 	}
 }
-
-		/*Socket listener(SERVER_FLAGS);
-		listener.bindAndListen("localhost", "7777");
-		Socket peer = listener.accept();
-		char msg[5];
-		peer.receive(msg, 5);
-		printf("%s\n", msg);*/
