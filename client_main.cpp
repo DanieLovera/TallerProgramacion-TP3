@@ -4,10 +4,10 @@
 
 int main(int argc, const char* argv[]) {
 	try {
-		Socket socket;
-		socket.connect("localhost", "7777");
-		const char *buffer = "hola";
-		socket.send(buffer, 5);
+		//Socket socket;
+		//socket.connect("localhost", "7777");
+		//const char *buffer = "hola";
+		//socket.send(buffer, 5);
 
 		return 0;
 	}
@@ -21,5 +21,4 @@ int main(int argc, const char* argv[]) {
 		std::cerr << "Unknow error!";
 		return 1;
 	}
-	return 0;
 }
