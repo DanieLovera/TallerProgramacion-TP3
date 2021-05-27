@@ -11,12 +11,9 @@ int main(int argc, const char* argv[]) {
 		Socket socket;
 		socket.connect("localhost", "7777");
 		CommunicationProtocol communicationProtocol(socket);
-		std::string buffer;
-		communicationProtocol.receive(buffer);
-		std::cout << buffer << std::endl;
 
-		/*std::string userEntry;
-		std::cin >> userEntry;
+		std::string userEntry;
+		std::getline(std::cin, userEntry);
 
 		std::istringstream iss(userEntry);
 		std::string command;
@@ -44,7 +41,7 @@ int main(int argc, const char* argv[]) {
 
 		} else {
 			std::cout << "Cualquiera" << std::endl;
-		}*/
+		}
 		return 0;
 	}
 
