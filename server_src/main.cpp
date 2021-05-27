@@ -1,5 +1,6 @@
 #include "../common_src/AddressInfo.h"
 #include "../common_src/Socket.h"
+#include "CommunicationProtocol.h"
 #include "Tateti.h"
 #include <iostream>
 
@@ -9,12 +10,19 @@
 
 int main(int argc, const char* argv[]) {
 	try {
-		/*Socket listener(SERVER_FLAGS);
+		Socket listener(SERVER_FLAGS);
 		listener.bindAndListen("localhost", "7777");
 		Socket peer = listener.accept();
-		char msg[5];
-		peer.receive(msg, 5);
-		printf("%s\n", msg);*/
+		CommunicationProtocol communicationProtocol(peer);
+
+		std::string command;
+		communicationProtocol.receiveCommand(command);
+		std::cout << command << std::endl;
+		/*std::string row;
+		std::string column;
+		communicationProtocol.receive(column, row);
+		std::cout << row << std::endl;
+		std::cout << column << std::endl;*/
 
 		return 0;
 	}
