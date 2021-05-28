@@ -4,6 +4,7 @@
 
 #include <iostream>
 #define CLIENT_SOCKET 0
+#define SERVER_CLOSED 0
 
 CommunicationProtocol::CommunicationProtocol(Socket &socket) 
 	: socket(socket) { }
@@ -31,10 +32,13 @@ void CommunicationProtocol::send(const std::string &command,
 	sendPlay(row, column);
 }
 
-void CommunicationProtocol::receive(std::string &buffer) const {
+ssize_t CommunicationProtocol::receive(std::string &buffer) const {
 	size_t size = 0;
-	receiveSize(size);
-	receiveMsg(buffer, size);
+	ssize_t receivedBytes = receiveSize(size);
+	if (receivedBytes != SERVER_CLOSED) {
+		receivedBytes =	receiveMsg(buffer, size);
+	}
+	return receivedBytes;
 }
 
 void CommunicationProtocol::sendCommand(const std::string &command) const {
@@ -67,17 +71,19 @@ uint8_t CommunicationProtocol::playToByte(const std::string &row,
 	return (_row | _column);
 }
 
-void CommunicationProtocol::receiveSize(size_t &size) const {
+ssize_t CommunicationProtocol::receiveSize(size_t &size) const {
 	uint16_t _size = 0;
-	socket.receive((void *) &_size, sizeof(_size));
+	ssize_t receivedBytes = socket.receive((void *) &_size, sizeof(_size));
 	_size = ntohs(_size);
 	size = _size;
+	return receivedBytes;
 }
 
-void CommunicationProtocol::receiveMsg(std::string &buffer, size_t &size) const {
+ssize_t CommunicationProtocol::receiveMsg(std::string &buffer, size_t &size) const {
 	char *_buffer = new char[size + 1];
-	socket.receive((void *) _buffer, size);
+	ssize_t receivedBytes = socket.receive((void *) _buffer, size);
 	_buffer[size] = '\0';
 	buffer = _buffer;
 	delete [] _buffer;
+	return receivedBytes;
 }

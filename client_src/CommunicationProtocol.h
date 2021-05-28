@@ -19,8 +19,8 @@ class CommunicationProtocol {
 					  const std::string &column) const;
 		uint8_t playToByte(const std::string &row, 
 						   const std::string &column) const;
-		void receiveSize(size_t &size) const;
-		void receiveMsg(std::string &buffer, size_t &size) const;
+		ssize_t receiveSize(size_t &size) const;
+		ssize_t receiveMsg(std::string &buffer, size_t &size) const;
 
 	public:
 		CommunicationProtocol(Socket &socket);
@@ -33,7 +33,7 @@ class CommunicationProtocol {
 		void send(const std::string &command, 
 			   	  const std::string &column,
 				  const std::string &row) const;
-		void receive(std::string &buffer) const;
+		ssize_t receive(std::string &buffer) const;
 };
 
 #endif // _COMMUNICATION_PROTOCOL_H_
