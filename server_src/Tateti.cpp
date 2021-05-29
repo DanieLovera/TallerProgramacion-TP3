@@ -1,8 +1,11 @@
 #include "Tateti.h"
 
-Tateti::Tateti(std::string nameID) : board(), nameID(nameID), 
+/*Tateti::Tateti(std::string nameID) : board(), nameID(nameID), 
 									 players{Player('O'), Player('X')}, 
-									 currentPlayer(&players[playerO]) { }
+									 currentPlayer(&players[playerO]) { }*/
+Tateti::Tateti() : board(), 
+				   players{Player('O'), Player('X')}, 
+				   currentPlayer(&players[playerO]) { }
 
 Tateti::Tateti(Tateti &&other) { }
 

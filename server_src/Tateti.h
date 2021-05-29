@@ -12,7 +12,7 @@ class Tateti {
 		static const int playerO = 0;
 		static const int playerX = 1;
 		Board board;
-		std::string nameID;
+		//std::string nameID;
 		Player players[totalPlayers];
 		Player *currentPlayer;
 
@@ -22,7 +22,8 @@ class Tateti {
 		void changeCurrentPlayer();
 
 	public:
-		Tateti(std::string nameID);
+		//Tateti(std::string nameID);
+		Tateti();
 		Tateti(Tateti &&other);
 		~Tateti();
 		Tateti& operator=(Tateti &&other);

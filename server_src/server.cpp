@@ -7,17 +7,17 @@
 #include <iostream>
 
 #include "Board.h"
-#define CLOSED_SIGNAL 'q'
+#define CLOSE_SIGNAL 'q'
 
 int main(int argc, const char* argv[]) {
 	try {
 		Listener listener("7777");
 		listener.start();
 
-		char closedSignal;
+		char closeSignal;
 		do {
-			closedSignal = std::cin.get();
-		} while (closedSignal != CLOSED_SIGNAL);
+			closeSignal = std::cin.get();
+		} while (closeSignal != CLOSE_SIGNAL);
 
 		listener.stop();
 		listener.join();

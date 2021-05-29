@@ -34,10 +34,11 @@ void Listener::run() {
 			clients.add(std::move(peer));
 			clients.cleanDeadClients();
 		} catch (const std::exception &exception) {
-			clients.stopClients();
+			//clients.stopClients();
 			break;
 		}
 	}
+	clients.stopClients();
 }
 
 void Listener::stop() {

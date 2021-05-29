@@ -1,6 +1,6 @@
 #include "Clients.h"
 #include "Client.h"
-
+#include "GamesMonitor.h"
 #include <iostream>
 
 Clients::Clients() { }
@@ -19,7 +19,8 @@ Clients& Clients::operator=(Clients &&other) {
 }
 
 void Clients::add(Socket &&peer) {
-	Client *client = new Client(std::move(peer));
+	//GamesMonitor gamesMonitor;
+	Client *client = new Client(std::move(peer), gamesMonitor);
 	clients.push_back(client);
 	client->start();
 }
