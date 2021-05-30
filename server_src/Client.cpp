@@ -3,17 +3,16 @@
 #include "GamesMonitor.h"
 #include <string>
 #include <utility>
+#include <iostream>
 
 Client::Client(Socket &&peer, 
 			   GamesMonitor &gamesMonitor) 
 					: peer(std::move(peer)),
 					  gamesMonitor(gamesMonitor),
-					  keepTalking(true),
 					  isRunning(true) { }
 
 Client::Client(Client &&other) : peer(std::move(other.peer)),
 								 gamesMonitor(other.gamesMonitor),
-								 keepTalking(other.keepTalking),
 								 isRunning(other.isRunning) { }
 
 Client::~Client() { }
@@ -25,10 +24,8 @@ void Client::run() {
 	std::string gameName;
 	std::string buffer;
 
-	while(keepTalking) {
-		ssize_t receivedBytes = communicationProtocol.receiveCommand(buffer);
-		if (receivedBytes == 0) {break;}
-
+	ssize_t receivedBytes = communicationProtocol.receiveCommand(buffer);
+	while(receivedBytes != 0) {
 		if (buffer.compare("0x6E") == 0) {
 			communicationProtocol.receive(buffer);
 			if (gameName.empty()) {
@@ -57,18 +54,16 @@ void Client::run() {
 				gamesMonitor[gameName].insert(stoi(row), stoi(column), player);
 				buffer = gamesMonitor[gameName].toString(player);
 			}
-
-		} else {
-			throw("Invalid command entry.");
 		}
 		communicationProtocol.send(buffer);
+		receivedBytes = communicationProtocol.receiveCommand(buffer);
 	}
 	//gamesMonitor.removeIfPresent(gameName);
 	isRunning = false;
 }
 
 void Client::stop() {
-	keepTalking = false;
+	//keepTalking = false;
 }
 
 bool Client::isDead() const {

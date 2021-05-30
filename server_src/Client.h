@@ -10,7 +10,6 @@ class Client : public Thread {
 	private:
 		Socket peer;
 		GamesMonitor &gamesMonitor;
-		bool keepTalking;
 		bool isRunning;
 
 		Client(const Client &other) = delete;
