@@ -1,9 +1,9 @@
 #include "CommunicationProtocol.h"
 #include <cstring>
 #include <cmath>
+#include <string>
+#include <utility>
 
-
-#include <iostream>
 #define CLIENT_SOCKET 0
 #define CLIENT_CLOSED 0
 
@@ -13,13 +13,13 @@ CommunicationProtocol::CommunicationProtocol(Socket &socket)
 CommunicationProtocol::CommunicationProtocol(CommunicationProtocol &&other)
 	: socket(other.socket) { }
 
-CommunicationProtocol::~CommunicationProtocol() {}
+CommunicationProtocol::~CommunicationProtocol() { }
 
 ssize_t CommunicationProtocol::receiveCommand(std::string &buffer) const {
 	uint8_t _buffer = 0;
 	char hexCommand[5];
 	ssize_t receivedBytes = socket.receive((void*) &_buffer, sizeof(uint8_t));
-	sprintf(hexCommand, "0x%02X", _buffer);
+	snprintf(hexCommand, sizeof(hexCommand),"0x%02X", _buffer);
 	buffer = hexCommand;
 	return receivedBytes;
 }
@@ -37,7 +37,8 @@ ssize_t CommunicationProtocol::receive(std::string &msg) const {
 ssize_t CommunicationProtocol::receive(std::string &column,
 							  	 	std::string &row) const {
 	uint8_t compressedPlay = 0;
-	ssize_t receivedBytes = socket.receive((void*) &compressedPlay, sizeof(uint8_t));
+	ssize_t receivedBytes = socket.receive((void*) &compressedPlay, 
+							sizeof(uint8_t));
 	byteToPlay(compressedPlay, column, row);
 	return receivedBytes;
 }

@@ -1,41 +1,71 @@
 #include "Tateti.h"
+#include <string> 
+#include <sstream>
 
-/*Tateti::Tateti(std::string nameID) : board(), nameID(nameID), 
-									 players{Player('O'), Player('X')}, 
-									 currentPlayer(&players[playerO]) { }*/
 Tateti::Tateti() : board(), 
-				   players{Player('O'), Player('X')}, 
-				   currentPlayer(&players[playerO]) { }
-
-Tateti::Tateti(Tateti &&other) { }
+				   players{nullptr, nullptr},
+				   currentPlayer(nullptr),
+				   isGameOver(false),
+				   result('p'),
+				   playsMade(0) { }
 
 Tateti::~Tateti() { }
 
-Tateti& Tateti::operator=(Tateti &&other) {
-	return *this;
-}
-
-void Tateti::insert(int row, int column) {
-	char currentPlayerSymbol = currentPlayer->getSymbol();
-	board.insert(currentPlayerSymbol,row, column);
-	changeCurrentPlayer();
-}
-
-bool Tateti::gameOver() const {
-	int status = board.gameOver();
+char Tateti::gameOver() {
+	char status = board.gameOver();
 	return status;
 }
 
-std::ostream& operator<<(std::ostream& os, const Tateti &obj) {
-	os << obj.board;
-	return os;
-}
-
-void Tateti::changeCurrentPlayer() {
-	if (currentPlayer == &players[playerO]) {
-		currentPlayer = &players[playerX];
-	} else {
-		currentPlayer = &players[playerO];
+void Tateti::insert(int row, int column, const Player &player) {
+	std::lock_guard<std::mutex> lock(mutex);
+	if (&player == currentPlayer) {
+		char currentPlayerSymbol = currentPlayer->getSymbol();
+		board.insert(currentPlayerSymbol, row, column);
+		changeCurrentPlayer();
+		char status = gameOver();
+		if (status == 'X' || status == 'O' || status == 't') {
+			result = status;
+			isGameOver = true;
+		}
+		cv.notify_all();
 	}
 }
 
+std::string Tateti::toString(const Player &player) {
+	std::unique_lock<std::mutex> lock(mutex);
+	while(&player != currentPlayer) {
+		if (isGameOver == true) {break;}
+		cv.wait(lock);
+	}
+	std::ostringstream oss;
+	oss << board;
+	if (result == player.getSymbol()) {
+		oss << "Felicitaciones! Ganaste!\n";
+	} else if (result == 't') {
+		oss << "La partida ha terminado en empate\n";
+	} else if (result != 'p') {
+		oss << "Has perdido. Segui intentando!\n";
+	}
+	return oss.str();
+}
+
+void Tateti::setPlayerOne(Player &player) {
+	player.setSymbol('O');
+	players[playerO] = &player;
+	currentPlayer = &player;
+}
+
+void Tateti::setPlayerTwo(Player &player) {
+	player.setSymbol('X');
+	players[playerX] = &player;
+	if(playsMade > 0) currentPlayer = &player;
+}
+
+void Tateti::changeCurrentPlayer() {
+	if (currentPlayer == players[playerO]) {
+		currentPlayer = players[playerX];
+	} else {
+		currentPlayer = players[playerO];
+	}
+	playsMade++;
+}

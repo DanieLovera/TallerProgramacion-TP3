@@ -1,7 +1,8 @@
 #include "Clients.h"
 #include "Client.h"
 #include "GamesMonitor.h"
-#include <iostream>
+#include <list>
+#include <utility>
 
 Clients::Clients() { }
 
@@ -19,7 +20,6 @@ Clients& Clients::operator=(Clients &&other) {
 }
 
 void Clients::add(Socket &&peer) {
-	//GamesMonitor gamesMonitor;
 	Client *client = new Client(std::move(peer), gamesMonitor);
 	clients.push_back(client);
 	client->start();
@@ -33,7 +33,7 @@ void Clients::cleanDeadClients() {
 			delete (*it);
 			it = clients.erase(it);
 		} else {
-			it++;
+			++it;
 		}
 	}
 }

@@ -11,7 +11,8 @@
 
 int main(int argc, const char* argv[]) {
 	try {
-		Listener listener("7777");
+		if (argc != 2) return 1;
+		Listener listener(argv[1]);
 		listener.start();
 
 		char closeSignal;
@@ -22,10 +23,10 @@ int main(int argc, const char* argv[]) {
 		listener.stop();
 		listener.join();
 		return 0;
-	} catch (const std::exception &exception) {
+	} catch(const std::exception &exception) {
 		std::cerr << exception.what() << std::endl;
 		return 1;
-	} catch (...) {
+	} catch(...) {
 		std::cerr << "Unknow error!";
 		return 1;
 	}

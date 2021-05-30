@@ -1,8 +1,8 @@
 #include "Client.h"
 #include "Tateti.h"
 #include "GamesMonitor.h"
-#include <iostream>
-#include <sstream>
+#include <string>
+#include <utility>
 
 Client::Client(Socket &&peer, 
 			   GamesMonitor &gamesMonitor) 
@@ -18,34 +18,24 @@ Client::Client(Client &&other) : peer(std::move(other.peer)),
 
 Client::~Client() { }
 
-/*Client& Client::operator=(Client &&other) {
-	if (this == &other) return *this;
-	peer = std::move(other.peer);
-	keepTalking = other.keepTalking;
-	isRunning = other.isRunning;
-	return *this;
-}*/
-
 void Client::run() {
 	CommunicationProtocol communicationProtocol(peer);
+	Tateti tateti;
+	Player player;
 	std::string gameName;
-
-
 	std::string buffer;
-	std::ostringstream oss;
-	ssize_t receivedBytes = 0;
+
 	while(keepTalking) {
-		receivedBytes = communicationProtocol.receiveCommand(buffer);
+		ssize_t receivedBytes = communicationProtocol.receiveCommand(buffer);
 		if (receivedBytes == 0) {break;}
 
 		if (buffer.compare("0x6E") == 0) {
 			communicationProtocol.receive(buffer);
 			if (gameName.empty()) {
-				Tateti tateti;
+				tateti.setPlayerOne(player);
 				gameName = buffer;
-				gamesMonitor.putIfAbsent(std::move(buffer), std::move(tateti));
-				oss << tateti;
-				buffer = oss.str();
+				gamesMonitor.putIfAbsent(std::move(buffer), tateti);
+				buffer = gamesMonitor[gameName].toString(player);
 			}
 
 		} else if (buffer.compare("0x6C") == 0) {
@@ -55,8 +45,8 @@ void Client::run() {
 			communicationProtocol.receive(buffer);
 			if (gameName.empty()) {
 				gameName = buffer;
-				oss << gamesMonitor[buffer];
-				buffer = oss.str();
+				gamesMonitor[gameName].setPlayerTwo(player);
+				buffer = gamesMonitor[gameName].toString(player);
 			}
 
 		} else if (buffer.compare("0x70") == 0) {
@@ -64,17 +54,17 @@ void Client::run() {
 				std::string column;
 				std::string row;
 				communicationProtocol.receive(column, row);
-				gamesMonitor[gameName].insert(stoi(row), stoi(column));
-				oss << gamesMonitor[gameName];
-				buffer = oss.str();
+				gamesMonitor[gameName].insert(stoi(row), stoi(column), player);
+				buffer = gamesMonitor[gameName].toString(player);
 			}
 
 		} else {
-			throw ("Invalid command entry.");
+			throw("Invalid command entry.");
 		}
 		communicationProtocol.send(buffer);
 	}
-	isRunning = false;	
+	//gamesMonitor.removeIfPresent(gameName);
+	isRunning = false;
 }
 
 void Client::stop() {

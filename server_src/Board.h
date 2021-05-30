@@ -4,11 +4,11 @@
 #include <ostream>
 
 class Board {
-
 	private:
 		static const char nought = 'O';
 		static const char cross = 'X';
 		static const char emptySymbol = ' ';
+		char winner;
 		static const int rows = 3;
 		static const int columns = rows;
 		char board[rows][columns];
@@ -16,12 +16,12 @@ class Board {
 
 		Board(const Board &other) = delete;
 		Board& operator=(const Board &other) = delete;
-		bool checkRows() const;
-		bool checkColumns() const;
-		bool checkDiagonal() const;
-		bool checkAntiDiagonal() const;
-		bool checkRow(int row) const;
-		bool checkColumn(int column) const; 
+		bool checkRows();
+		bool checkColumns();
+		bool checkDiagonal();
+		bool checkAntiDiagonal();
+		bool checkRow(int row);
+		bool checkColumn(int column); 
 
 	public: 
 		Board();
@@ -31,7 +31,7 @@ class Board {
 
 		void insert(char symbol, int row, int column);
 		friend std::ostream& operator<<(std::ostream &os, const Board &obj);
-		int gameOver() const;
+		char gameOver();
 };
 
 #endif // _BOARD_H_

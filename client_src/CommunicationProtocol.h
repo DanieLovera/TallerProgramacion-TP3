@@ -20,10 +20,10 @@ class CommunicationProtocol {
 		uint8_t playToByte(const std::string &row, 
 						   const std::string &column) const;
 		ssize_t receiveSize(size_t &size) const;
-		ssize_t receiveMsg(std::string &buffer, size_t &size) const;
+		ssize_t receiveMsg(std::string &buffer, const size_t &size) const;
 
 	public:
-		CommunicationProtocol(Socket &socket);
+		explicit CommunicationProtocol(Socket &socket);
 		CommunicationProtocol(CommunicationProtocol &&other);
 		~CommunicationProtocol();
 

@@ -64,7 +64,8 @@ void AddressInfo::createSocket(int &fileDescriptor) const {
 }
 
 int AddressInfo::connectSocket(int &fileDescriptor) const {
-	int status = ::connect(fileDescriptor, addrinfo->ai_addr, addrinfo->ai_addrlen);
+	int status = ::connect(fileDescriptor, addrinfo->ai_addr, 
+						   addrinfo->ai_addrlen);
 	return status;
 }
 

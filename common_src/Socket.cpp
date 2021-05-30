@@ -13,10 +13,11 @@ Socket::Socket() : Socket(CLIENT_SOCKET) { }
 
 Socket::Socket(int aiFlags) : Socket(AF_INET, SOCK_STREAM, aiFlags) { }
 
-Socket::Socket(int aiFamily, int aiSocktype, int aiFlags) : fileDescriptor(UNVALID_SOCKET), 
-															aiFamily(aiFamily), 
-															aiSocktype(aiSocktype), 
-															aiFlags(aiFlags) { }
+Socket::Socket(int aiFamily, int aiSocktype, int aiFlags) 
+	: fileDescriptor(UNVALID_SOCKET), 								
+	  aiFamily(aiFamily), 
+      aiSocktype(aiSocktype), 
+	  aiFlags(aiFlags) { }
  
 Socket::Socket(Socket &&other) : fileDescriptor(other.fileDescriptor), 
 								 aiFamily(other.aiFamily), 

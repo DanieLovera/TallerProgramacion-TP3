@@ -9,7 +9,7 @@ class ErrnoException : public std::exception {
         int _errno;
 
     public:
-        ErrnoException(int _errno);
+        explicit ErrnoException(int _errno);
         const char* what() const noexcept override;
 };
 

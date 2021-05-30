@@ -4,7 +4,8 @@
 #include "Board.h"
 #include "Player.h"
 #include <string>
-#include <ostream>
+#include <mutex>
+#include <condition_variable>
 
 class Tateti {
 	private:
@@ -12,25 +13,29 @@ class Tateti {
 		static const int playerO = 0;
 		static const int playerX = 1;
 		Board board;
-		//std::string nameID;
-		Player players[totalPlayers];
+		Player *players[totalPlayers];
 		Player *currentPlayer;
+		std::mutex mutex;
+		std::condition_variable cv;
+		bool isGameOver;
+		char result;
+		int playsMade;
 
 		Tateti(const Tateti &other) = delete;
 		Tateti& operator=(const Tateti &other) = delete;
-
+		Tateti(Tateti &&other) = delete;
+		Tateti& operator=(Tateti &&other) = delete;
 		void changeCurrentPlayer();
 
 	public:
-		//Tateti(std::string nameID);
 		Tateti();
-		Tateti(Tateti &&other);
 		~Tateti();
-		Tateti& operator=(Tateti &&other);
-		friend std::ostream& operator<<(std::ostream& os, const Tateti &obj);
 
-		void insert(int row, int column);
-		bool gameOver() const;
+		void insert(int row, int column, const Player &player);
+		std::string toString(const Player &player);
+		char gameOver();
+		void setPlayerOne(Player &player);
+		void setPlayerTwo(Player &player);
 };
 
 #endif // _TA_TE_TI_H_

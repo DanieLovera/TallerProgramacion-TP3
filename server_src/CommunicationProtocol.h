@@ -20,14 +20,14 @@ class CommunicationProtocol {
 		void sendMsg(const std::string &msg) const;
 
 	public:
-		CommunicationProtocol(Socket &socket);
+		explicit CommunicationProtocol(Socket &socket);
 		CommunicationProtocol(CommunicationProtocol &&other);
 		~CommunicationProtocol();
 
 		ssize_t receiveCommand(std::string &command) const;
 		ssize_t receive(std::string &msg) const;
 		ssize_t receive(std::string &column,
-					 std::string &row) const;
+					 	std::string &row) const;
 		void send(const std::string &buffer) const;
 };
 

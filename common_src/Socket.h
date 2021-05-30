@@ -20,7 +20,7 @@ class Socket {
 
     public:
         Socket();
-        Socket(int aiFlags);
+        explicit Socket(int aiFlags);
         Socket(int aiFamily, int aiSocktype, int aiFlags);
         Socket(Socket &&other);
         ~Socket();

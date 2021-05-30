@@ -15,7 +15,7 @@ class Listener : public Thread {
 		void run() override;
 
 	public:
-		Listener(const char *service);
+		explicit Listener(const char *service);
 		Listener(const char *host, 
 				 const char *service);
 		Listener(Listener &&other);

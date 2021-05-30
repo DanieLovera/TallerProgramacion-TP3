@@ -2,6 +2,7 @@
 #include "Clients.h"
 
 #include <iostream>
+#include <utility>
 #define SERVER_FLAGS AI_PASSIVE
 
 Listener::Listener(const char *service) 
@@ -33,8 +34,7 @@ void Listener::run() {
 			Socket peer = listener.accept();
 			clients.add(std::move(peer));
 			clients.cleanDeadClients();
-		} catch (const std::exception &exception) {
-			//clients.stopClients();
+		} catch(const std::exception &exception) {
 			break;
 		}
 	}

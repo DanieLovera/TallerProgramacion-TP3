@@ -5,15 +5,19 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+#define WIN_MSG "Felicitaciones! Ganaste!"
+#define LOST_MSG "Has perdido. Segui intentando!"
+#define TIE_MSG "La partida ha terminado en empate"
 
 int main(int argc, const char* argv[]) {
 	try {
+		if (argc != 3) return 1;
 		Socket socket;
-		socket.connect("localhost", "7777");
+		socket.connect(argv[1], argv[2]);
 		CommunicationProtocol communicationProtocol(socket);
+		bool gameOver = false;
 
-
-		while (true) {
+		while (!gameOver) {
 			std::string userEntry;
 			std::getline(std::cin, userEntry);
 
@@ -40,20 +44,23 @@ int main(int argc, const char* argv[]) {
 				communicationProtocol.send("0x70", column, row);
 
 			} else {
-				throw ("Invalid command entry.");
+				throw("Invalid command entry.");
 			}
 			communicationProtocol.receive(buffer);
-			std::cout << buffer << std::endl;
+			std::cout << buffer;
+			gameOver = (buffer.find(WIN_MSG) != std::string::npos || 
+						buffer.find(LOST_MSG) != std::string::npos ||
+						buffer.find(TIE_MSG) != std::string::npos);
 		}
 		return 0;
 	}
 
-	catch (const std::exception &exception) {
+	catch(const std::exception &exception) {
 		std::cerr << exception.what() << std::endl;
 		return 1;
 	}
 
-	catch (...) {
+	catch(...) {
 		std::cerr << "Unknow error!";
 		return 1;
 	}

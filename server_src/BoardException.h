@@ -9,7 +9,7 @@ class BoardException : public std::exception {
         const char *msg;
 
     public:
-        BoardException(const char *msg);
+        explicit BoardException(const char *msg);
         const char* what() const noexcept override;
 };
 

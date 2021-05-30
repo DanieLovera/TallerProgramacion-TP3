@@ -11,7 +11,7 @@ class GetAddressInfoException : public std::exception {
     	int gaierr;
 
     public:
-    	GetAddressInfoException(int gaierr) : gaierr(gaierr) { }
+		explicit GetAddressInfoException(int gaierr) : gaierr(gaierr) { }
 
 	    const char* what() const noexcept {
 	       return gai_strerror(gaierr);

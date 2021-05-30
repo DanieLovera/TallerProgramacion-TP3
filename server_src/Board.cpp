@@ -1,12 +1,12 @@
 #include "Board.h"
 #include "BoardException.h"
 #include <cstring>
+#include <utility>
 
-#define EXIST_A_WINNER 1
-#define PLAYING 0
-#define TIE -1
+#define PLAYING 'p'
+#define TIE 't'
 
-Board::Board() : tilesFilled (0) { 
+Board::Board() : winner(' '), tilesFilled(0) { 
 	memset(board, emptySymbol, rows * columns);
 }
 
@@ -43,18 +43,19 @@ void Board::insert(char symbol, int row, int column) {
 	tilesFilled++;
 }
 
-int Board::gameOver() const {
+char Board::gameOver() {
 	bool existWinner = (checkRows() || checkColumns() ||
 		    checkDiagonal() || checkAntiDiagonal());
 	if (existWinner) {
-		return EXIST_A_WINNER;
-	} else if (!existWinner && tilesFilled < rows * columns) {
+		return winner;
+	//} else if (!existWinner && tilesFilled < rows * columns) {
+	} else if (tilesFilled < rows * columns) {
 		return PLAYING;
 	}
 	return TIE;
 }
 
-bool Board::checkRows() const {
+bool Board::checkRows() {
 	bool win = false;
 	int i = 0;
 	while ((i < rows) && (win == false)) {
@@ -64,7 +65,7 @@ bool Board::checkRows() const {
 	return win;
 }
 
-bool Board::checkColumns() const {
+bool Board::checkColumns() {
 	bool win = false;
 	int j = 0;
 	while ((j < columns) && (win == false)) {
@@ -74,7 +75,7 @@ bool Board::checkColumns() const {
 	return win;
 }
 
-bool Board::checkDiagonal() const {
+bool Board::checkDiagonal() {
 	bool win = true;
 	int i = 0;
 	if (emptySymbol == board[i][i]) {win = false;}
@@ -82,10 +83,11 @@ bool Board::checkDiagonal() const {
 		win = (board[i][i] == board[i+1][i+1]);
 		i++;
 	}
+	if(win == true) winner = board[0][0];
 	return win;
 }
 
-bool Board::checkAntiDiagonal() const {
+bool Board::checkAntiDiagonal() {
 	bool win = true;
 	int j = 0;
 	if (emptySymbol == board[rows-1][j]) {win = false;}
@@ -93,10 +95,11 @@ bool Board::checkAntiDiagonal() const {
 		win = (board[(columns-1) - j][j] == board[(columns-2) - j][j+1]);
 		j++;
 	}
+	if(win == true) winner = board[0][2];
 	return win;
 }
 
-bool Board::checkRow(int row) const {
+bool Board::checkRow(int row) {
 	bool win = true;
 	int j = 0;
 	if (emptySymbol == board[row][j]) {win = false;}
@@ -104,10 +107,11 @@ bool Board::checkRow(int row) const {
 		win = (board[row][j] == board[row][j+1]);
 		j++;
 	}
+	if(win == true) winner = board[row][0];
 	return win;
 }
 
-bool Board::checkColumn(int column) const {
+bool Board::checkColumn(int column) {
 	bool win = true;
 	int i = 0;
 	if (emptySymbol == board[i][column]) {win = false;}
@@ -115,17 +119,21 @@ bool Board::checkColumn(int column) const {
 		win = (board[i][column] == board[i+1][column]);
 		i++;
 	}
+	if(win == true) winner = board[0][column];
 	return win;
 }
 
 std::ostream& operator<<(std::ostream &os, const Board &obj) {
-	os << "    1   2   3  \n";
+	os << "    1 . 2 . 3 .\n";
 	os << "  +---+---+---+\n";
-	os << "1 | " << obj.board[0][0] << " | " << obj.board[0][1] << " | " << obj.board[0][2] << " |\n";
+	os << "1 | " << obj.board[0][0] << " | " << obj.board[0][1] 
+	<< " | " << obj.board[0][2] << " |\n";
 	os << "  +---+---+---+\n";
-	os << "2 | " << obj.board[1][0] << " | " << obj.board[1][1] << " | " << obj.board[1][2] << " |\n";
+	os << "2 | " << obj.board[1][0] << " | " << obj.board[1][1] 
+	<< " | " << obj.board[1][2] << " |\n";
 	os << "  +---+---+---+\n";
-	os << "3 | " << obj.board[2][0] << " | " << obj.board[2][1] << " | " << obj.board[2][2] << " |\n";
+	os << "3 | " << obj.board[2][0] << " | " << obj.board[2][1] 
+	<< " | " << obj.board[2][2] << " |\n";
 	os << "  +---+---+---+\n";
 	return os;
 }

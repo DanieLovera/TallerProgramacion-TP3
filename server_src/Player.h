@@ -9,10 +9,11 @@ class Player {
 
 	public:
 		Player();
-		Player(char symbol);
+		explicit Player(char symbol);
 		Player(Player &&other);
 		~Player();
 		Player& operator=(Player &&other);
+		void setSymbol(char symbol);
 		char getSymbol() const;
 };
 

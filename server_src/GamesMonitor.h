@@ -9,7 +9,7 @@ class Tateti;
 
 class GamesMonitor {
 	private:
-		std::map<std::string, Tateti> games;
+		std::map<std::string, Tateti*> games;
 		std::mutex mutex;
 
 		GamesMonitor(const GamesMonitor &other) = delete;
@@ -20,9 +20,9 @@ class GamesMonitor {
 	public:
 		GamesMonitor();
 		~GamesMonitor();
-		void putIfAbsent(std::string &&key, Tateti &&tateti);
-		void removeIfPresent(const std::string &key);
-		Tateti& operator[](const std::string key);
+		void putIfAbsent(std::string &&key, Tateti &tateti);
+		//void removeIfPresent(const std::string &key);
+		Tateti& operator[](const std::string &key);
 		std::string toString();
 };
 

@@ -1,4 +1,5 @@
 #include "Player.h"
+#include <iostream>
 
 Player::Player() : Player('O') { }
 
@@ -13,6 +14,10 @@ Player& Player::operator=(Player &&other) {
 	symbol = other.symbol;
 	other.symbol = 'O';
 	return *this;
+}
+
+void Player::setSymbol(char symbol) {
+	this->symbol = symbol;
 }
 
 char Player::getSymbol() const {

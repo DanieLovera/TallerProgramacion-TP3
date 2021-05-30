@@ -1,8 +1,7 @@
 #include "CommunicationProtocol.h"
 #include <cstring>
+#include <string>
 
-
-#include <iostream>
 #define CLIENT_SOCKET 0
 #define SERVER_CLOSED 0
 
@@ -79,7 +78,8 @@ ssize_t CommunicationProtocol::receiveSize(size_t &size) const {
 	return receivedBytes;
 }
 
-ssize_t CommunicationProtocol::receiveMsg(std::string &buffer, size_t &size) const {
+ssize_t CommunicationProtocol::receiveMsg(std::string &buffer, 
+										  const size_t &size) const {
 	char *_buffer = new char[size + 1];
 	ssize_t receivedBytes = socket.receive((void *) _buffer, size);
 	_buffer[size] = '\0';
