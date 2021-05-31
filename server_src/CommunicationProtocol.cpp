@@ -35,7 +35,7 @@ ssize_t CommunicationProtocol::receive(std::string &msg) const {
 }
 
 ssize_t CommunicationProtocol::receive(std::string &column,
-							  	 	std::string &row) const {
+							  	 	   std::string &row) const {
 	uint8_t compressedPlay = 0;
 	ssize_t receivedBytes = socket.receive((void*) &compressedPlay, 
 							sizeof(uint8_t));

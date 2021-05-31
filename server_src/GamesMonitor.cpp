@@ -16,14 +16,6 @@ void GamesMonitor::putIfAbsent(std::string &&key, Tateti &tateti) {
 	}
 }
 
-/*void GamesMonitor::removeIfPresent(const std::string &key) {
-	std::lock_guard<std::mutex> lock(mutex);
-	std::map<std::string, Tateti*>::iterator it = games.find(key);
-	if (it != games.end()) {
-		games.erase(key);
-	}
-}*/
-
 Tateti& GamesMonitor::operator[](const std::string &key) {
 	return *(games.at(key));
 }

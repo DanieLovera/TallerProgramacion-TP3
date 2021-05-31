@@ -63,7 +63,7 @@ void AddressInfo::createSocket(int &fileDescriptor) const {
 							addrinfo->ai_protocol);
 }
 
-int AddressInfo::connectSocket(int &fileDescriptor) const {
+int AddressInfo::connectSocket(const int &fileDescriptor) const {
 	int status = ::connect(fileDescriptor, addrinfo->ai_addr, 
 						   addrinfo->ai_addrlen);
 	return status;

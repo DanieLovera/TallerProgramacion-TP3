@@ -18,11 +18,38 @@ class GamesMonitor {
 		GamesMonitor& operator=(GamesMonitor &&other) = delete;
 
 	public:
+		/*
+		 * @brief Constructor.
+		 */
 		GamesMonitor();
+
+		/*
+		 * @brief Destructor.
+		 */
 		~GamesMonitor();
+
+		/*
+		 * @brief Agrega un tateti a la coleccion, con clave
+		 * key.
+		 * @param key: Entrada para mapear la partida de tateti. Esta
+		 * es movida como objeto miembro.
+		 * @param tateti: Recibe una referencia a un tateti para
+		 * almacenar su direccion de memoria en ea coleccion.
+		 */
 		void putIfAbsent(std::string &&key, Tateti &tateti);
-		//void removeIfPresent(const std::string &key);
+
+		/*
+		 * @brief Obtiene un tateti usando la clave key.
+		 * @param key: Llave que mapea al objeto buscado.
+		 * @return Devuelve una partida de tateti.
+		 */
 		Tateti& operator[](const std::string &key);
+
+		/*
+		 * @brief Lista las claves almacenadas en la coleccion.
+		 * @return Devuelve un string con un formato de lista que
+		 * representa las llaves.
+		 */ 
 		std::string toString();
 };
 

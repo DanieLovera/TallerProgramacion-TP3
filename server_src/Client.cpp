@@ -3,7 +3,6 @@
 #include "GamesMonitor.h"
 #include <string>
 #include <utility>
-#include <iostream>
 
 Client::Client(Socket &&peer, 
 			   GamesMonitor &gamesMonitor) 
@@ -58,13 +57,10 @@ void Client::run() {
 		communicationProtocol.send(buffer);
 		receivedBytes = communicationProtocol.receiveCommand(buffer);
 	}
-	//gamesMonitor.removeIfPresent(gameName);
 	isRunning = false;
 }
 
-void Client::stop() {
-	//keepTalking = false;
-}
+void Client::stop() { }
 
 bool Client::isDead() const {
 	return !isRunning;

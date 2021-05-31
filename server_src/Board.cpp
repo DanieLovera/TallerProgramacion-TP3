@@ -48,7 +48,6 @@ char Board::gameOver() {
 		    checkDiagonal() || checkAntiDiagonal());
 	if (existWinner) {
 		return winner;
-	//} else if (!existWinner && tilesFilled < rows * columns) {
 	} else if (tilesFilled < rows * columns) {
 		return PLAYING;
 	}
