@@ -21,10 +21,9 @@ Tateti& GamesMonitor::operator[](const std::string &key) {
 }
 
 std::string GamesMonitor::toString() {
-	std::lock_guard<std::mutex> lock(mutex);
 	std::string str;
 	str += "Partidas:\n";
-	for (auto &pair : games) {
+	for (const auto &pair : games) {
 		str += " - ";
 		str += pair.first;
 		str += "\n";
