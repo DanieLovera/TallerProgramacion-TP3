@@ -16,5 +16,7 @@ Con esta estructura es suficiente para cumplir con los requerimientos del trabaj
 ---
 ### Desarrollo ###  
 
+![Diagrama de flujo](images/diagrama_flujo.png) 
+
 
 
