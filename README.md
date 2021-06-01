@@ -16,6 +16,8 @@ Con esta estructura es suficiente para cumplir con los requerimientos del trabaj
 ---
 ### Desarrollo ###  
 
+![Diagrama de clases](images/diagrama_clases.png) 
+
 ![Diagrama de flujo](images/diagrama_flujo.png) 
 
 
